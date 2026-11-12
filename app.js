@@ -167,7 +167,7 @@ async function start(event) {
   pairsById = Object.fromEntries(pairs.map((pair) => [pair.pair_id, pair]));
   const random = seededRandom(rater);
   order = sessionOrder(pairs, random);
-  swaps = sideSwaps(pairs, random);
+  swaps = WEB_MODE ? session.swaps : sideSwaps(pairs, random);
   index = order.findIndex((pair) => !(pair.pair_id in ratings));
   $("login").hidden = true;
   if (index === -1) return showDone();

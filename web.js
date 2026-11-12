@@ -36,8 +36,9 @@ async function unlock(username, password) {
   } catch {
     throw new Error(LOGIN_FAILED); // AES-GCM tag mismatch = wrong password
   }
-  const { key, token } = JSON.parse(new TextDecoder().decode(secret));
-  return { contentKey: await crypto.subtle.importKey("raw", fromBase64(key), "AES-GCM", false, ["decrypt"]), token };
+  const { key, token, swaps } = JSON.parse(new TextDecoder().decode(secret));
+  const contentKey = await crypto.subtle.importKey("raw", fromBase64(key), "AES-GCM", false, ["decrypt"]);
+  return { contentKey, token, swaps };
 }
 
 async function callScript(search, request) {
@@ -51,8 +52,10 @@ async function callScript(search, request) {
 
 async function loadWeb(username, password, report) {
   report("Unlocking…");
-  const { contentKey, token } = await unlock(username, password);
+  const { contentKey, token, swaps } = await unlock(username, password);
   const pairs = JSON.parse(new TextDecoder().decode(await decrypt(contentKey, await fetchBytes("data.enc"))));
+  const unbalanced = pairs.filter((pair) => typeof swaps[pair.pair_id] !== "boolean");
+  if (unbalanced.length) throw new Error(`no A/B assignment for ${unbalanced.map((pair) => pair.pair_id)}; rebuild`);
   const videoUrls = {};
   const videoPaths = [...new Set(pairs.map((pair) => pair.video))];
   for (const [position, path] of videoPaths.entries()) {
@@ -65,6 +68,7 @@ async function loadWeb(username, password, report) {
   return {
     pairs: pairs.map((pair) => ({ ...pair, video: videoUrls[pair.video] })),
     ratings,
+    swaps, // balanced across users by build_web.py
     // text/plain body: a "simple" request, so the browser skips the CORS preflight Apps Script can't answer
     postRating: (record) => callScript("", { method: "POST", body: JSON.stringify({ rater: username, token, record }) }),
   };
