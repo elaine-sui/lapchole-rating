@@ -85,6 +85,8 @@ const PREFERENCE_LEVELS = ["a_much", "a_slight", "tie", "b_slight", "b_much"].ma
 const SIDES = ["left", "right"]; // displayed as Response A / Response B
 const $ = (id) => document.getElementById(id);
 const WEB_MODE = document.body.dataset.mode === "web"; // set by build_web.py
+const TOUCH = window.matchMedia("(hover: none)").matches; // phones/tablets: no keyboard shortcuts
+const SUBMIT_HINT = TOUCH ? "Tap Next" : "Press Enter";
 let order = []; // this rater's session order
 let swaps = {}; // pair_id -> true when canonical response b is displayed as Response A
 let ratings = {};
@@ -368,9 +370,10 @@ function refresh() {
   }
   const remaining = open.filter((id) => answers[id] == null).length;
   $("confirm").classList.remove("warning");
-  if (remaining) $("confirm").textContent = `${remaining} left. Number keys answer the highlighted question.`;
-  else if (stage === "rate" && order[index].source_guess) $("confirm").textContent = "Press Enter to lock your ratings and answer one last question.";
-  else $("confirm").textContent = "Press Enter to save and continue.";
+  const answerHint = TOUCH ? "Answer the highlighted question." : "Number keys answer the highlighted question.";
+  if (remaining) $("confirm").textContent = `${remaining} left. ${answerHint}`;
+  else if (stage === "rate" && order[index].source_guess) $("confirm").textContent = `${SUBMIT_HINT} to lock your ratings and answer one last question.`;
+  else $("confirm").textContent = `${SUBMIT_HINT} to save and continue.`;
 }
 
 function warn(message) {
@@ -398,6 +401,7 @@ function submit() {
   if (missing) {
     active = missing;
     refresh();
+    document.querySelector(`.question[data-id="${missing}"]`).scrollIntoView({ block: "center", behavior: "smooth" });
     return warn("Please answer the highlighted question first.");
   }
   const violation = stage === "rate" && ruleViolation();
@@ -430,7 +434,7 @@ async function save() {
   try {
     await postRating(record);
   } catch (err) {
-    return warn(`Not saved (${err.message}). Check your connection and press Enter to retry.`);
+    return warn(`Not saved (${err.message}). Check your connection, then ${TOUCH ? "tap Next" : "press Enter"} to retry.`);
   } finally {
     saving = false;
   }

@@ -64,7 +64,7 @@ video { width: 100%; background: #000; border-radius: 6px; }
 .box.adequate { background: var(--good-bg); color: var(--good-fg); }
 .box.inadequate { background: var(--bad-bg); color: var(--bad-fg); }
 .box.category { color: var(--activity-fg); }
-footer { position: fixed; bottom: 0; left: 0; right: 0; padding: 8px 16px; background: var(--bg); border-top: 1px solid var(--border); }
+#dock { position: fixed; bottom: 0; left: 0; right: 0; padding: 8px 16px; background: var(--bg); border-top: 1px solid var(--border); }
 #buttons { display: flex; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
 #buttons button { flex: 1; display: flex; align-items: center; justify-content: center; gap: 10px; padding: 12px 6px; border: 0; border-radius: 0; background: var(--panel); font-weight: 500; transition: background 0.15s; }
 #buttons button + button { border-left: 1px solid var(--border); }
@@ -83,9 +83,51 @@ footer { position: fixed; bottom: 0; left: 0; right: 0; padding: 8px 16px; backg
 #buttons button.selected .side { color: inherit; }
 #buttons .key { display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; border: 2px solid var(--strong); border-radius: 50%; background: var(--bg); color: var(--strong); font-size: 13px; font-weight: 700; }
 #buttons button.selected .key { color: var(--strong); }
-footer > .label { margin-bottom: 4px; font-weight: 600; }
+#preference > .label { margin-bottom: 4px; font-weight: 600; }
 #confirm { min-height: 1.45em; margin-top: 6px; color: var(--accent); font-weight: 600; }
 #confirm.warning { color: var(--bad-fg); }
 #nav { display: flex; gap: 8px; margin-top: 8px; }
 #comment { flex: 1; }
 @media (max-width: 900px) { #content { grid-template-columns: 1fr; } #player { position: static; } #buttons { flex-wrap: wrap; } #buttons button { flex-basis: 50%; } }
+/* Phones: preference flows after the responses, only status + Back/Next stay fixed, the video stays in view. */
+@media (max-width: 700px) {
+  input { font-size: 16px; } /* below 16px iOS zooms in on focus */
+  .panel { margin: 8vh auto; }
+  #login-form { display: grid; gap: 8px; }
+  #login-form button { justify-self: start; }
+  header { flex-wrap: wrap; gap: 4px 8px; padding: 6px 12px; }
+  #progress { flex: 1; white-space: nowrap; }
+  #meta { order: 3; flex-basis: 100%; font-size: 13px; }
+  header button { padding: 4px 10px; white-space: nowrap; }
+  #verdict { padding: 8px 12px 0; font-size: 15px; }
+  .box { font-size: 14px; }
+  #content { gap: 10px; padding: 8px 12px 12px; }
+  #dock { display: contents; }
+  #preference { padding: 0 12px 100px; }
+  #buttons { flex-direction: column; }
+  #buttons button { flex: none; width: 100%; justify-content: flex-start; padding: 10px 14px; }
+  #buttons button + button { border-left: 0; border-top: 1px solid var(--border); }
+  footer { position: fixed; bottom: 0; left: 0; right: 0; z-index: 6; padding: 6px 12px 10px; background: var(--bg); border-top: 1px solid var(--border); }
+  #confirm { margin-top: 0; font-size: 13px; }
+  #nav { margin-top: 6px; }
+  #nav button { white-space: nowrap; }
+  #comment { min-width: 0; }
+  .question:not(#buttons) button { height: 38px; padding: 0 12px; font-size: 14px; }
+  .tag { padding: 6px 12px; font-size: 13px; }
+  /* tables become one card per item */
+  #rubric table, #rubric tbody, #rubric tr, #rubric td { display: block; width: auto; }
+  #rubric tr:first-child { display: none; }
+  #rubric tr { margin-bottom: 8px; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
+  #rubric td { border: 0; border-top: 1px solid var(--border); }
+  #rubric td:first-child { border-top: 0; }
+  #rubric td.l2::before { content: "2 \00B7  "; font-weight: 700; }
+  #rubric td.l1::before { content: "1 \00B7  "; font-weight: 700; }
+  #rubric td.l0::before { content: "0 \00B7  "; font-weight: 700; }
+}
+@media (max-width: 700px) and (min-height: 600px) {
+  #player { position: sticky; top: 0; z-index: 5; padding-bottom: 4px; background: var(--bg); }
+  video { display: block; width: auto; max-width: 100%; max-height: 25vh; margin: 0 auto; }
+  #speed { position: absolute; top: 6px; right: 6px; margin: 0; padding: 2px 8px; font-size: 12px; opacity: 0.85; }
+}
+/* Touch screens: no keyboard, so hide the number-key hints on rubric choices. */
+@media (hover: none) { .question:not(#buttons) .key { display: none; } }
