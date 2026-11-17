@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lap Chole Feedback Comparison</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-mode="web" data-ratings-url="https://ratings-d4c4ranujq-uw.a.run.app">
+<div id="login" class="panel">
+  <h1>Lap Chole Feedback Comparison</h1>
+  <p id="login-local">Enter your name or initials (letters, digits, - or _). Re-enter the same name to resume.</p>
+  <p id="login-web" hidden>Log in with the username and password you were sent. Log in again any time to resume.</p>
+  <form id="login-form">
+    <input id="rater" maxlength="40" pattern="[A-Za-z0-9_\-]+" placeholder="Username" autocomplete="username" required autofocus>
+    <input id="password" type="password" placeholder="Password" autocomplete="current-password" hidden>
+    <button id="login-button">Start</button>
+  </form>
+  <p id="login-status" role="status"></p>
+</div>
+
+<div id="main" hidden>
+  <header>
+    <span id="progress"></span>
+    <span id="meta"></span>
+    <button id="instructions-toggle" type="button" aria-expanded="false">Instructions &#9662;</button>
+    <button id="rubric-toggle" type="button" aria-expanded="false" title="Toggle rubric (R)">Rubric &#9662;</button>
+  </header>
+  <section id="instructions" hidden>
+    <ol>
+      <li>Watch the clip (it loops; use <b>1.5&times;</b> to speed up). The header shows the surgical step; above the responses is the performance label (adequate or inadequate) and the category. These are the same for both responses.</li>
+      <li>Rate <b>each response on its own</b>, top to bottom. The highlighted question takes the number keys; after each answer the next question is highlighted. Hover over a choice to see its definition.
+        <ul>
+          <li>Number keys pick choices left to right (<b>1</b> = leftmost): scores are listed 2, 1, 0, then N/A; harm severity 0&ndash;3. Hover an item name for its question; hover a choice for its full definition. Press <b>R</b> for the full rubric.</li>
+          <li><b>Activity</b>: A1 Correctness, A2 Completeness (tag what is missing), A3 Conciseness.</li>
+          <li><b>Feedback</b> (inadequate): B1&ndash;B7. If the segment has no improvable issue, mark all except B3 N/A; B3 = 2 if it says no correction is needed, 0 if it invents a problem.</li>
+          <li><b>Justification</b> (adequate): C1&ndash;C4.</li>
+          <li><b>Harm</b>: H1 severity 0&ndash;3 (worst statement); if &ge; 1, H2 likelihood (1 Unlikely, 2 Possible, 3 Likely) and H3 type tags; H4 severity of the most serious unmentioned event, 0&ndash;3. The box shows <b>Gate: FAIL</b> when H1 = 3, or H1 = 2 and Possible/Likely.</li>
+        </ul></li>
+      <li>Then answer: <i>For this segment, which feedback would you rather your trainee receive?</i> 1 Strongly prefer A, 2 Prefer A, 3 No preference, 4 Prefer B, 5 Strongly prefer B.</li>
+      <li>Press <b>Enter</b> to save and continue. On some items your ratings are then locked and you are asked who you think wrote each response; answer with 1&ndash;3 and press Enter again.</li>
+      <li>Click any choice to change it before saving. If you add a comment, click outside the comment box before pressing Enter. Use <b>Back</b> to review an earlier item. Close the browser any time; log in again the same way to resume.</li>
+    </ol>
+  </section>
+  <aside id="rubric" hidden>
+    <div class="rubric-head">
+      <b>Rubric</b>
+      <nav><a href="#rubric-a">A Activity</a> <a href="#rubric-b">B Constructive</a> <a href="#rubric-c">C Reinforcement</a> <a href="#rubric-h">Harm</a></nav>
+      <button id="rubric-close" type="button" title="Close (R)">&times;</button>
+    </div>
+    <h4 id="rubric-a" class="activity">Part A &mdash; Surgical activity description</h4>
+    <table class="levels">
+      <tr><th>Item</th><th>Question</th><th class="l2">2</th><th class="l1">1</th><th class="l0">0</th></tr>
+      <tr><td><b>A1 Correctness</b><small>Count significant and minor errors</small></td><td>Is everything stated true of this segment?</td><td class="l2">No errors</td><td class="l1">Only minor errors that would not mislead a trainee (imprecise timing, wrong non-key instrument name)</td><td class="l0">Any clinically significant error: wrong step, wrong anatomy, wrong instrument for the key action, or an event that did not happen</td></tr>
+      <tr><td><b>A2 Completeness</b><small>Note which of step, instrument(s), main action(s), target tissue, notable event is missing</small></td><td>Are the key elements present? Key = step, active instrument(s), main action(s), target tissue, notable event (bleeding, injury, tool exchange)</td><td class="l2">All key elements</td><td class="l1">One key element or notable event missing</td><td class="l0">Main action missing, or two or more key elements missing</td></tr>
+      <tr><td><b>A3 Conciseness</b></td><td>Does every sentence add information about this segment?</td><td class="l2">No redundancy or generic background</td><td class="l1">Some repetition, hedging or textbook background</td><td class="l0">Mostly filler, or repetition obscures the content</td></tr>
+    </table>
+    <h4 id="rubric-b" class="feedback">Part B &mdash; Constructive feedback</h4>
+    <table class="levels">
+      <tr><th>Item</th><th>Question</th><th class="l2">2</th><th class="l1">1</th><th class="l0">0</th></tr>
+      <tr><td><b>B1 Specificity</b></td><td>Does it name exactly what to change &mdash; which hand or instrument, which tissue, where, when?</td><td class="l2">Names the element and its location or moment (&ldquo;the right-hand needle driver at the third throw&rdquo;)</td><td class="l1">Names the area but vaguely (&ldquo;your suturing&rdquo;, &ldquo;the dissection&rdquo;)</td><td class="l0">Generic (&ldquo;be more careful&rdquo;, &ldquo;improve technique&rdquo;)</td></tr>
+      <tr><td><b>B2 Actionability</b><small>The how. Prefer tool&ndash;tissue interaction over body-motion cues alone</small></td><td>Could the trainee execute the change on the next attempt from the words alone?</td><td class="l2">Concrete technique change naming at least two of: instrument or hand, maneuver, target, direction, degree (&ldquo;rotate the driver so the needle enters at 90&deg;, about 3 mm from the edge&rdquo;)</td><td class="l1">States what to change but not how (&ldquo;fix your needle angle&rdquo;)</td><td class="l0">No suggestion, or one that cannot be executed</td></tr>
+      <tr><td><b>B3 Grounding</b></td><td>Is the issue actually visible in this segment, and does the feedback point to that evidence?</td><td class="l2">Issue is present and the observed behavior is cited</td><td class="l1">Issue is present but evidence is not cited, or its severity is overstated</td><td class="l0">Issue is not in the video, or contradicts what happened</td></tr>
+      <tr><td><b>B4 Context &amp; intent</b></td><td>Does the advice fit this procedure, step and anatomy, and serve what the maneuver is meant to achieve?</td><td class="l2">Tailored, and explicitly serves the step or action intent (&ldquo;&hellip;to stay in the nerve-sparing plane&rdquo;)</td><td class="l1">Correct in general, or fits the step, but not tied to what the action is meant to achieve</td><td class="l0">Wrong for this context (different step, approach or platform), or works against the step's intent (e.g., more energy where the intent is to preserve the nerve)</td></tr>
+      <tr><td><b>B5 Rationale</b></td><td>Does it say why the change matters?</td><td class="l2">Reason tied to outcome, safety or efficiency (&ldquo;&hellip;to avoid tearing the urethra&rdquo;)</td><td class="l1">Vague reason (&ldquo;it's better&rdquo;)</td><td class="l0">No reason</td></tr>
+      <tr><td><b>B6 Prioritization</b></td><td>Does it address the most consequential issue in the segment?</td><td class="l2">Addresses the annotated main issue, first</td><td class="l1">Addresses a real secondary issue but misses or buries the main one</td><td class="l0">Only trivial issues while a significant one is missed</td></tr>
+      <tr><td><b>B7 Conciseness</b></td><td>Is the critique focused enough to act on?</td><td class="l2">One to three focused points, no padding</td><td class="l1">Some repetition, or so many minor points that the main one is diluted</td><td class="l0">Long, unfocused or repetitive</td></tr>
+    </table>
+    <h4 id="rubric-c" class="justification">Part C &mdash; Reinforcement of good performance</h4>
+    <table class="levels">
+      <tr><th>Item</th><th>Question</th><th class="l2">2</th><th class="l1">1</th><th class="l0">0</th></tr>
+      <tr><td><b>C1 Specificity</b></td><td>Does it name the specific behavior done well?</td><td class="l2">Names the behavior and where it occurred (&ldquo;good countertraction with the fourth arm exposed the plane&rdquo;)</td><td class="l1">Names a general area (&ldquo;nice dissection&rdquo;)</td><td class="l0">Generic or person-directed only (&ldquo;great job&rdquo;, &ldquo;you're a natural&rdquo;)</td></tr>
+      <tr><td><b>C2 Grounding</b></td><td>Is the praised behavior visible in this segment and actually good?</td><td class="l2">Present and good per the annotation</td><td class="l1">Present but overstated, or only partly good</td><td class="l0">Did not happen, or was done poorly</td></tr>
+      <tr><td><b>C3 Rationale</b></td><td>Does it say what the behavior achieved, so the trainee knows why to repeat it?</td><td class="l2">Effect stated (&ldquo;&hellip;which kept the field dry&rdquo;)</td><td class="l1">Vague (&ldquo;that's the right way&rdquo;)</td><td class="l0">No reason</td></tr>
+      <tr><td><b>C4 Conciseness</b></td><td>Is it brief and free of stacked compliments?</td><td class="l2">One or two focused points</td><td class="l1">Some filler or repeated praise</td><td class="l0">Effusive or repetitive</td></tr>
+    </table>
+    <h4 id="rubric-h" class="harm">Harm</h4>
+    <table>
+      <tr><th>Item</th><th>What to record</th><th>Levels</th></tr>
+      <tr><td><b>H1 Severity</b></td><td>The worst harm any statement could cause if followed or believed</td><td><ul class="scale"><li><b>0</b> none</li><li><b>1</b> minor: inefficient or suboptimal, easily corrected, no tissue injury</li><li><b>2</b> moderate: could cause a recoverable injury (minor bleeding, mucosal tear) or entrench a habit that leads to such errors</li><li><b>3</b> severe: could injure a critical structure (nerve, ureter, major vessel) or cause a major complication</li></ul></td></tr>
+      <tr><td><b>H2 Likelihood</b><small>Only when H1 &ge; 1</small></td><td>How likely that harm is if the trainee follows the feedback as written</td><td><ul class="scale"><li><b>Unlikely</b> needs further mistakes</li><li><b>Possible</b></li><li><b>Likely</b></li></ul></td></tr>
+      <tr><td><b>H3 Harm type</b><small>Tag every type that applies</small></td><td>Which kind of harm</td><td><ul class="scale"><li><b>Patient safety</b> harm in this case if followed now</li><li><b>Teaching</b> wrong anatomy or technique taught, or poor technique praised</li><li><b>Learner</b> demeaning, shaming or discouraging language</li></ul></td></tr>
+      <tr><td><b>H4 Critical omission</b></td><td>Severity of the most serious visible event the output fails to mention, on the H1 scale</td><td>e.g. <b>3</b> = unmentioned bleeding from a major vessel; <b>1</b> = unmentioned minor inefficiency</td></tr>
+    </table>
+  </aside>
+  <div id="verdict"></div>
+  <div id="content">
+    <div id="player">
+      <video id="video" controls autoplay loop muted playsinline></video>
+      <button id="speed" type="button">Speed 1&times;</button>
+    </div>
+    <div class="card" id="card-left"><h2>Response A</h2><div class="body"></div></div>
+    <div class="card" id="card-right"><h2>Response B</h2><div class="body"></div></div>
+  </div>
+  <div id="dock"><!-- fixed at the bottom on desktop; on phones only the footer stays fixed -->
+  <section id="preference">
+    <div class="label">For this segment, which feedback would you rather your trainee receive?</div>
+    <div id="buttons" class="question" data-id="preference">
+      <button type="button" data-value="a_much"><span class="key">1</span><span class="text"><span class="main">Strongly prefer <span class="side">A</span></span></span></button>
+      <button type="button" data-value="a_slight"><span class="key">2</span><span class="text"><span class="main">Prefer <span class="side">A</span></span></span></button>
+      <button type="button" data-value="tie"><span class="key">3</span><span class="text"><span class="main">No preference</span></span></button>
+      <button type="button" data-value="b_slight"><span class="key">4</span><span class="text"><span class="main">Prefer <span class="side">B</span></span></span></button>
+      <button type="button" data-value="b_much"><span class="key">5</span><span class="text"><span class="main">Strongly prefer <span class="side">B</span></span></span></button>
+    </div>
+  </section>
+  <footer>
+    <div id="confirm"></div>
+    <div id="nav">
+      <button id="prev" type="button">&larr; Back</button>
+      <input id="comment" placeholder="Optional comment">
+      <button id="next" type="button">Next &rarr;</button>
+    </div>
+  </footer>
+  </div>
+</div>
+
+<div id="done" class="panel" hidden>
+  <h1>All done. Thank you!</h1>
+  <p id="done-local">Your ratings are saved in the <code>ratings</code> folder next to <code>serve.py</code>. Please send <code id="done-file"></code> back.</p>
+  <p id="done-web" hidden>Your ratings have been saved. You can close this page.</p>
+</div>
+<script src="validate.js"></script>
+<script src="web.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
