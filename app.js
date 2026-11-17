@@ -474,7 +474,7 @@ $("speed").addEventListener("click", () => {
   $("video").playbackRate = rate;
   $("speed").textContent = `Speed ${rate}×`;
 });
-$("prev").addEventListener("click", () => { index -= 1; render(); });
+$("prev").addEventListener("click", () => { if (!saving) { index -= 1; render(); } });
 $("next").addEventListener("click", () => { if (!saving) submit(); });
 for (const button of document.querySelectorAll("#buttons button")) {
   button.addEventListener("click", () => answer("preference", button.dataset.value));
