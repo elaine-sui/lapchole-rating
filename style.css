@@ -88,6 +88,21 @@ video { width: 100%; background: #000; border-radius: 6px; }
 #confirm.warning { color: var(--bad-fg); }
 #nav { display: flex; gap: 8px; margin-top: 8px; }
 #comment { flex: 1; }
+/* Laptops and desktops: larger video and text (rater feedback: both were too small). */
+@media (min-width: 901px) {
+  body { font-size: 17px; }
+  #content { grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr) minmax(0, 1fr); padding-bottom: 200px; }
+  video { display: block; max-height: calc(100vh - 290px); object-fit: contain; } /* stays fully above the fixed dock */
+  #speed { font-size: 15px; }
+  #verdict { font-size: 20px; }
+  .box { font-size: 18px; }
+  .card h2 { font-size: 20px; }
+  .card h3 { font-size: 14px; }
+  .question .label, .tags .label { font-size: 15px; }
+  .question:not(#buttons) button { height: 32px; padding: 0 8px; font-size: 14px; }
+  .question:not(#buttons) .key { font-size: 10px; }
+  .tag { font-size: 14px; }
+}
 @media (max-width: 900px) { #content { grid-template-columns: 1fr; } #player { position: static; } #buttons { flex-wrap: wrap; } #buttons button { flex-basis: 50%; } }
 /* Phones: preference flows after the responses, only status + Back/Next stay fixed, the video stays in view. */
 @media (max-width: 700px) {
