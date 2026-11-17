@@ -335,7 +335,7 @@ function render() {
   if ($("video").getAttribute("src") !== pair.video) $("video").src = pair.video;
   const saved = ratings[pair.pair_id];
   loadAnswers(saved);
-  stage = saved && pair.source_guess ? "guess" : "rate";
+  stage = "rate"; // saved ratings stay editable; Enter re-asks the source guess, prefilled
   active = firstUnanswered() ?? null;
   for (const side of SIDES) fillCard(side, pair[canonicalSide(side)]);
   $("comment").value = saved ? saved.comment || "" : "";
